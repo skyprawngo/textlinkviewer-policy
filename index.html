@@ -296,8 +296,8 @@
             <a href="terms.html" data-i18n="nav-terms">Terms</a>
             <select class="lang-select" onchange="setLang(this.value)" aria-label="Language">
                 <option value="en">EN</option>
-                <option value="ko">KO</option>
-                <option value="ja">JA</option>
+                <option value="kr">KR</option>
+                <option value="jp">JP</option>
             </select>
         </div>
     </div>
@@ -443,7 +443,7 @@ const i18n = {
         "footer-terms": "Terms of Service",
         "footer-contact": "Contact"
     },
-    ko: {
+    kr: {
         "nav-features": "\uae30\ub2a5",
         "nav-pro": "Pro",
         "nav-privacy": "\uac1c\uc778\uc815\ubcf4",
@@ -474,7 +474,7 @@ const i18n = {
         "footer-terms": "\uc774\uc6a9\uc57d\uad00",
         "footer-contact": "\ubb38\uc758"
     },
-    ja: {
+    jp: {
         "nav-features": "\u6a5f\u80fd",
         "nav-pro": "Pro",
         "nav-privacy": "\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc",
@@ -519,17 +519,17 @@ function setLang(lang) {
     try { localStorage.setItem("lv-lang", lang); } catch(e) {}
 }
 
-// Restore saved language or detect from browser
+// URL hash > saved preference > browser language
 (function() {
-    let lang;
-    try { lang = localStorage.getItem("lv-lang"); } catch(e) {}
-    if (!lang) {
-        const bl = navigator.language || "";
-        if (bl.startsWith("ko")) lang = "ko";
-        else if (bl.startsWith("ja")) lang = "ja";
-        else lang = "en";
-    }
-    setLang(lang);
+    var hash = location.hash.replace("#", "");
+    if (hash && i18n[hash]) { setLang(hash); return; }
+    var saved;
+    try { saved = localStorage.getItem("lv-lang"); } catch(e) {}
+    if (saved && i18n[saved]) { setLang(saved); return; }
+    var bl = navigator.language || "";
+    if (bl.startsWith("ko")) setLang("kr");
+    else if (bl.startsWith("ja")) setLang("jp");
+    else setLang("en");
 })();
 </script>
 
