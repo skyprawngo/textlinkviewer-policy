@@ -107,14 +107,9 @@
             width: 120px;
             height: 120px;
             border-radius: 26px;
-            background: linear-gradient(135deg, #4a90d9, #67b8f0);
             margin: 0 auto 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 30px rgba(74,144,217,0.25);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.18);
         }
-        .hero-icon svg { width: 60px; height: 60px; fill: #fff; }
         .hero h1 {
             font-size: clamp(2.2rem, 5vw, 3.2rem);
             font-weight: 700;
@@ -309,9 +304,7 @@
 </nav>
 
 <section class="hero">
-    <div class="hero-icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>
-    </div>
+    <img class="hero-icon" src="app-icon.png" alt="LinkViewer App Icon">
     <h1 data-i18n="hero-title">Your Documents,<br>Always With You.</h1>
     <p data-i18n="hero-subtitle">One app for text, PDF, and ePub. Start reading on iPhone, continue on iPad, finish on Mac — iCloud keeps your place automatically.</p>
     <div class="hero-badges">
