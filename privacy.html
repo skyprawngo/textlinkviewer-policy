@@ -169,6 +169,13 @@ function toggleLang(lang) {
     document.getElementById('ko').style.display = lang === 'ko' ? 'block' : 'none';
     document.getElementById('ja').style.display = lang === 'ja' ? 'block' : 'none';
 }
+// Auto-detect browser language on load
+(function() {
+    var bl = navigator.language || "";
+    if (bl.startsWith("ko")) toggleLang("ko");
+    else if (bl.startsWith("ja")) toggleLang("ja");
+    else toggleLang("en");
+})();
 </script>
 </body>
 </html>

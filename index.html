@@ -519,11 +519,16 @@ function setLang(lang) {
     try { localStorage.setItem("lv-lang", lang); } catch(e) {}
 }
 
-// Restore saved language or default to English
+// Restore saved language or detect from browser
 (function() {
     let lang;
     try { lang = localStorage.getItem("lv-lang"); } catch(e) {}
-    if (!lang) lang = "en";
+    if (!lang) {
+        const bl = navigator.language || "";
+        if (bl.startsWith("ko")) lang = "ko";
+        else if (bl.startsWith("ja")) lang = "ja";
+        else lang = "en";
+    }
     setLang(lang);
 })();
 </script>
