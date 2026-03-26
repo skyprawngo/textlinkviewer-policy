@@ -328,9 +328,10 @@
             iCloud Sync
         </span>
     </div>
-    <a class="app-store-btn" href="https://apps.apple.com/app/id6760252034" target="_blank" rel="noopener">
-        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
-    </a>
+    <!-- TODO: 앱 출시 후 실제 App Store URL로 교체 -->
+    <span class="app-store-btn" style="opacity:0.85;cursor:default;">
+        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Coming Soon on the App Store">
+    </span>
 </section>
 
 <section class="features" id="features">
@@ -525,16 +526,11 @@ function setLang(lang) {
     try { localStorage.setItem("lv-lang", lang); } catch(e) {}
 }
 
-// Restore saved language or detect from browser
+// Restore saved language or default to English
 (function() {
     let lang;
     try { lang = localStorage.getItem("lv-lang"); } catch(e) {}
-    if (!lang) {
-        const bl = navigator.language || "";
-        if (bl.startsWith("ko")) lang = "ko";
-        else if (bl.startsWith("ja")) lang = "ja";
-        else lang = "en";
-    }
+    if (!lang) lang = "en";
     setLang(lang);
 })();
 </script>
