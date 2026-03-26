@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkViewer — Your Documents, Always With You</title>
+    <meta name="description" content="One app for text, PDF, and ePub. iCloud syncs your reading position across iPhone, iPad, and Mac — so you never lose your place.">
+    <link rel="canonical" href="https://skyprawngo.github.io/textlinkviewer-policy/">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --accent: #0071e3;
+            --accent-hover: #0077ED;
+            --border: #d2d2d7;
+            --feature-bg: #f5f5f7;
+            --gradient-start: #e8f0fe;
+            --gradient-end: #fafafa;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --surface: #1c1c1e;
+                --text: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --accent: #2997ff;
+                --accent-hover: #4AADFF;
+                --border: #38383a;
+                --feature-bg: #1c1c1e;
+                --gradient-start: #0a1628;
+                --gradient-end: #000000;
+                --card-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Apple SD Gothic Neo",
+                         "Segoe UI", "Helvetica Neue", sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            background: rgba(250,250,250,0.72);
+            border-bottom: 1px solid var(--border);
+        }
+        @media (prefers-color-scheme: dark) {
+            nav { background: rgba(0,0,0,0.72); }
+        }
+        .nav-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .lang-select {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        @media (prefers-color-scheme: dark) {
+            .lang-select { color: var(--text-secondary); background: var(--surface); }
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(180deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            padding: 100px 20px 80px;
+            text-align: center;
+        }
+        .hero-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #4a90d9, #67b8f0);
+            margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(74,144,217,0.25);
+        }
+        .hero-icon svg { width: 60px; height: 60px; fill: #fff; }
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.12;
+            margin-bottom: 14px;
+        }
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 36px;
+            line-height: 1.5;
+        }
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .badge svg { width: 16px; height: 16px; fill: var(--text-secondary); }
+        .app-store-btn {
+            display: inline-block;
+            margin-top: 32px;
+            transition: opacity 0.2s;
+        }
+        .app-store-btn:hover { opacity: 0.8; }
+        .app-store-btn img { height: 52px; }
+
+        /* Features */
+        .features {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 48px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--feature-bg);
+            border-radius: 18px;
+            padding: 28px 24px;
+            transition: transform 0.2s;
+        }
+        .feature-card:hover { transform: translateY(-2px); }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+        }
+        .feature-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* Pro Section */
+        .pro-section {
+            background: var(--feature-bg);
+            padding: 80px 20px;
+        }
+        .pro-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .pro-inner h2 {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+        .pro-inner > p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            line-height: 1.5;
+        }
+        .pro-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+        .pro-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .pro-item .check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .pro-note {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 20px;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .footer-links a:hover { text-decoration: underline; }
+        .footer-copy {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 20px 50px; }
+            .features, .pro-section { padding: 50px 20px; }
+            .nav-links a.hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="nav-brand">LinkViewer</a>
+        <div class="nav-links">
+            <a href="#features" class="hide-mobile" data-i18n="nav-features">Features</a>
+            <a href="#pro" class="hide-mobile" data-i18n="nav-pro">Pro</a>
+            <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
+            <a href="terms.html" data-i18n="nav-terms">Terms</a>
+            <select class="lang-select" onchange="setLang(this.value)" aria-label="Language">
+                <option value="en">EN</option>
+                <option value="ko">KO</option>
+                <option value="ja">JA</option>
+            </select>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>
+    </div>
+    <h1 data-i18n="hero-title">Your Documents,<br>Always With You.</h1>
+    <p data-i18n="hero-subtitle">One app for text, PDF, and ePub. Start reading on iPhone, continue on iPad, finish on Mac — iCloud keeps your place automatically.</p>
+    <div class="hero-badges">
+        <span class="badge">
+            <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-1.99zM17 19H7V5h10v14z"/></svg>
+            iPhone &amp; iPad
+        </span>
+        <span class="badge">
+            <svg viewBox="0 0 24 24"><path d="M21 2H3a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7v2H8v2h8v-2h-2v-2h7a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-1 14H4V4h16v12z"/></svg>
+            Mac
+        </span>
+        <span class="badge">
+            <svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+            iCloud Sync
+        </span>
+    </div>
+    <a class="app-store-btn" href="https://apps.apple.com/app/id6760252034" target="_blank" rel="noopener">
+        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+    </a>
+</section>
+
+<section class="features" id="features">
+    <h2 data-i18n="features-title">Built for the Way You Read</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(74,144,217,0.12);">
+                <span style="color:#4a90d9;">&#128196;</span>
+            </div>
+            <h3 data-i18n="f1-title">One App, Every Format</h3>
+            <p data-i18n="f1-desc">Plain text, Markdown, PDF, ePub — open them all without switching apps.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(52,199,89,0.12);">
+                <span style="color:#34c759;">&#9729;&#65039;</span>
+            </div>
+            <h3 data-i18n="f2-title">Never Lose Your Place</h3>
+            <p data-i18n="f2-desc">iCloud syncs your reading position automatically — pick up exactly where you left off, on any device.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(255,149,0,0.12);">
+                <span style="color:#ff9500;">&#128214;</span>
+            </div>
+            <h3 data-i18n="f3-title">Read Your Way</h3>
+            <p data-i18n="f3-desc">Page-by-page or continuous scroll — read the way that feels natural to you.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(88,86,214,0.12);">
+                <span style="color:#5856d6;">&#128269;</span>
+            </div>
+            <h3 data-i18n="f4-title">Find It Instantly</h3>
+            <p data-i18n="f4-desc">Search any word or phrase across your document in seconds.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(255,69,58,0.12);">
+                <span style="color:#ff453a;">&#128193;</span>
+            </div>
+            <h3 data-i18n="f5-title">Your Personal Library</h3>
+            <p data-i18n="f5-desc">Organize everything with folders and keep your reading collection tidy.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(0,113,227,0.12);">
+                <span style="color:#0071e3;">&#127760;</span>
+            </div>
+            <h3 data-i18n="f6-title">Speaks Your Language</h3>
+            <p data-i18n="f6-desc">Available in English, Korean, and Japanese — feel right at home.</p>
+        </div>
+    </div>
+</section>
+
+<section class="pro-section" id="pro">
+    <div class="pro-inner">
+        <h2 data-i18n="pro-title">Upgrade to Pro</h2>
+        <p data-i18n="pro-subtitle">Every feature is already free. Pro just removes the ads — for a cleaner, distraction-free reading experience.</p>
+        <div class="pro-features">
+            <div class="pro-item">
+                <span class="check">&#10003;</span>
+                <span data-i18n="pro-f1">Ad-free reading</span>
+            </div>
+            <div class="pro-item">
+                <span class="check">&#10003;</span>
+                <span data-i18n="pro-f2">Family Sharing (up to 6)</span>
+            </div>
+            <div class="pro-item">
+                <span class="check">&#10003;</span>
+                <span data-i18n="pro-f3">Monthly or yearly plans</span>
+            </div>
+            <div class="pro-item">
+                <span class="check">&#10003;</span>
+                <span data-i18n="pro-f4">2-week free trial</span>
+            </div>
+        </div>
+        <p class="pro-note" data-i18n="pro-note">All features including iCloud sync, file import, and reading modes are available for free. Pro subscription only removes ads.</p>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-links">
+        <a href="privacy.html" data-i18n="footer-privacy">Privacy Policy</a>
+        <a href="terms.html" data-i18n="footer-terms">Terms of Service</a>
+        <a href="mailto:skyprawngo@gmail.com" data-i18n="footer-contact">Contact</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 skyprawngo. All rights reserved.</p>
+</footer>
+
+<script>
+const i18n = {
+    en: {
+        "nav-features": "Features",
+        "nav-pro": "Pro",
+        "nav-privacy": "Privacy",
+        "nav-terms": "Terms",
+        "hero-title": "Your Documents,<br>Always With You.",
+        "hero-subtitle": "One app for text, PDF, and ePub. Start reading on iPhone, continue on iPad, finish on Mac \u2014 iCloud keeps your place automatically.",
+        "features-title": "Built for the Way You Read",
+        "f1-title": "One App, Every Format",
+        "f1-desc": "Plain text, Markdown, PDF, ePub \u2014 open them all without switching apps.",
+        "f2-title": "Never Lose Your Place",
+        "f2-desc": "iCloud syncs your reading position automatically \u2014 pick up exactly where you left off, on any device.",
+        "f3-title": "Read Your Way",
+        "f3-desc": "Page-by-page or continuous scroll \u2014 read the way that feels natural to you.",
+        "f4-title": "Find It Instantly",
+        "f4-desc": "Search any word or phrase across your document in seconds.",
+        "f5-title": "Your Personal Library",
+        "f5-desc": "Organize everything with folders and keep your reading collection tidy.",
+        "f6-title": "Speaks Your Language",
+        "f6-desc": "Available in English, Korean, and Japanese \u2014 feel right at home.",
+        "pro-title": "Upgrade to Pro",
+        "pro-subtitle": "Every feature is already free. Pro just removes the ads \u2014 for a cleaner, distraction-free reading experience.",
+        "pro-f1": "Ad-free reading",
+        "pro-f2": "Family Sharing (up to 6)",
+        "pro-f3": "Monthly or yearly plans",
+        "pro-f4": "2-week free trial",
+        "pro-note": "All features including iCloud sync, file import, and reading modes are available for free. Pro subscription only removes ads.",
+        "footer-privacy": "Privacy Policy",
+        "footer-terms": "Terms of Service",
+        "footer-contact": "Contact"
+    },
+    ko: {
+        "nav-features": "\uae30\ub2a5",
+        "nav-pro": "Pro",
+        "nav-privacy": "\uac1c\uc778\uc815\ubcf4",
+        "nav-terms": "\uc774\uc6a9\uc57d\uad00",
+        "hero-title": "\ub0b4 \ubb38\uc11c,<br>\uc5b8\uc81c\ub098 \ud568\uaed8.",
+        "hero-subtitle": "\ud14d\uc2a4\ud2b8, PDF, ePub\uc744 \ud558\ub098\uc758 \uc571\uc73c\ub85c. iPhone\uc5d0\uc11c \uc2dc\uc791\ud558\uace0, iPad\uc5d0\uc11c \uc774\uc5b4 \uc77d\uace0, Mac\uc5d0\uc11c \ub9c8\ubb34\ub9ac\ud558\uc138\uc694 \u2014 iCloud\uac00 \uc77d\ub358 \uacf3\uc744 \uae30\uc5b5\ud569\ub2c8\ub2e4.",
+        "features-title": "\ub2f9\uc2e0\uc758 \ub3c5\uc11c \uc2b5\uad00\uc5d0 \ub9de\ucdb0",
+        "f1-title": "\ud558\ub098\uc758 \uc571, \ubaa8\ub4e0 \ud3ec\ub9f7",
+        "f1-desc": "\ud14d\uc2a4\ud2b8, \ub9c8\ud06c\ub2e4\uc6b4, PDF, ePub \u2014 \uc571\uc744 \uc624\uac00\uba70 \ud544\uc694 \uc5c6\uc774 \ubaa8\ub450 \uc5f4\uc5b4\ubcf4\uc138\uc694.",
+        "f2-title": "\uc77d\ub358 \uacf3\uc744 \uc783\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4",
+        "f2-desc": "iCloud\uac00 \uc77d\uae30 \uc704\uce58\ub97c \uc790\ub3d9 \ub3d9\uae30\ud654 \u2014 \uc5b4\ub5a4 \uae30\uae30\uc5d0\uc11c\ub4e0 \uc77d\ub358 \uacf3 \uadf8\ub300\ub85c \uc774\uc5b4\uac11\ub2c8\ub2e4.",
+        "f3-title": "\ub0b4 \uc2a4\ud0c0\uc77c\ub85c \uc77d\uae30",
+        "f3-desc": "\ud398\uc774\uc9c0 \ub118\uae30\uae30 \ub610\ub294 \uc5f0\uc18d \uc2a4\ud06c\ub864 \u2014 \uc790\uc5f0\uc2a4\ub7ec\uc6b4 \ubc29\uc2dd\uc73c\ub85c \uc77d\uc73c\uc138\uc694.",
+        "f4-title": "\uc21c\uc2dd\uac04\uc5d0 \ucc3e\uae30",
+        "f4-desc": "\ubb38\uc11c \uc548\uc5d0\uc11c \uc6d0\ud558\ub294 \ub2e8\uc5b4\ub098 \ubb38\uad6c\ub97c \ub2e8\ubc88\uc5d0 \uac80\uc0c9\ud569\ub2c8\ub2e4.",
+        "f5-title": "\ub098\ub9cc\uc758 \ub77c\uc774\ube0c\ub7ec\ub9ac",
+        "f5-desc": "\ud3f4\ub354\ub85c \uae54\ub054\ud558\uac8c \uc815\ub9ac\ud558\uace0, \ub098\ub9cc\uc758 \ub3c5\uc11c \ucf5c\ub809\uc158\uc744 \ub9cc\ub4dc\uc138\uc694.",
+        "f6-title": "\uc775\uc219\ud55c \uc5b8\uc5b4\ub85c",
+        "f6-desc": "\uc601\uc5b4, \ud55c\uad6d\uc5b4, \uc77c\ubcf8\uc5b4 \uc778\ud130\ud398\uc774\uc2a4 \uc644\ubcbd \uc9c0\uc6d0 \u2014 \ud3b8\uc548\ud558\uac8c \uc0ac\uc6a9\ud558\uc138\uc694.",
+        "pro-title": "Pro\ub85c \uc5c5\uadf8\ub808\uc774\ub4dc",
+        "pro-subtitle": "\ubaa8\ub4e0 \uae30\ub2a5\uc740 \uc774\ubbf8 \ubb34\ub8cc. Pro\ub294 \uad11\uace0\ub9cc \uc81c\uac70\ud574 \ub354 \uae68\ub057\ud558\uace0 \uc9d1\uc911\ub418\ub294 \ub3c5\uc11c \uacbd\ud5d8\uc744 \uc120\uc0ac\ud569\ub2c8\ub2e4.",
+        "pro-f1": "\uad11\uace0 \uc5c6\ub294 \ub3c5\uc11c",
+        "pro-f2": "\uac00\uc871 \uacf5\uc720 (\ucd5c\ub300 6\uba85)",
+        "pro-f3": "\uc6d4\uac04 \ub610\ub294 \uc5f0\uac04 \ud50c\ub79c",
+        "pro-f4": "2\uc8fc \ubb34\ub8cc \uccb4\ud5d8",
+        "pro-note": "iCloud \ub3d9\uae30\ud654, \ud30c\uc77c \uac00\uc838\uc624\uae30, \uc77d\uae30 \ubaa8\ub4dc \ub4f1 \ubaa8\ub4e0 \uae30\ub2a5\uc740 \ubb34\ub8cc\ub85c \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4. Pro \uad6c\ub3c5\uc740 \uad11\uace0\ub9cc \uc81c\uac70\ud569\ub2c8\ub2e4.",
+        "footer-privacy": "\uac1c\uc778\uc815\ubcf4\ucc98\ub9ac\ubc29\uce68",
+        "footer-terms": "\uc774\uc6a9\uc57d\uad00",
+        "footer-contact": "\ubb38\uc758"
+    },
+    ja: {
+        "nav-features": "\u6a5f\u80fd",
+        "nav-pro": "Pro",
+        "nav-privacy": "\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc",
+        "nav-terms": "\u5229\u7528\u898f\u7d04",
+        "hero-title": "\u3042\u306a\u305f\u306e\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u3001<br>\u3044\u3064\u3082\u305d\u3070\u306b\u3002",
+        "hero-subtitle": "\u30c6\u30ad\u30b9\u30c8\u3001PDF\u3001ePub\u30921\u3064\u306e\u30a2\u30d7\u30ea\u3067\u3002iPhone\u3067\u8aad\u307f\u59cb\u3081\u3001iPad\u3067\u7d9a\u3051\u3001Mac\u3067\u8aad\u307f\u7d42\u3048\u308b \u2014 iCloud\u304c\u8aad\u3093\u3060\u5834\u6240\u3092\u899a\u3048\u3066\u3044\u307e\u3059\u3002",
+        "features-title": "\u3042\u306a\u305f\u306e\u8aad\u66f8\u30b9\u30bf\u30a4\u30eb\u306b\u5408\u308f\u305b\u3066",
+        "f1-title": "1\u3064\u306e\u30a2\u30d7\u30ea\u3067\u5168\u30d5\u30a9\u30fc\u30de\u30c3\u30c8",
+        "f1-desc": "\u30c6\u30ad\u30b9\u30c8\u3001Markdown\u3001PDF\u3001ePub \u2014 \u30a2\u30d7\u30ea\u3092\u5207\u308a\u66ff\u3048\u305a\u306b\u3059\u3079\u3066\u958b\u3051\u307e\u3059\u3002",
+        "f2-title": "\u8aad\u3093\u3060\u5834\u6240\u3092\u5931\u308f\u306a\u3044",
+        "f2-desc": "iCloud\u304c\u8aad\u66f8\u4f4d\u7f6e\u3092\u81ea\u52d5\u540c\u671f \u2014 \u3069\u306e\u30c7\u30d0\u30a4\u30b9\u3067\u3082\u8aad\u3093\u3060\u3068\u3053\u308d\u304b\u3089\u518d\u958b\u3067\u304d\u307e\u3059\u3002",
+        "f3-title": "\u81ea\u5206\u3089\u3057\u304f\u8aad\u3080",
+        "f3-desc": "\u30da\u30fc\u30b8\u3081\u304f\u308a\u307e\u305f\u306f\u9023\u7d9a\u30b9\u30af\u30ed\u30fc\u30eb \u2014 \u81ea\u7136\u306a\u65b9\u5f0f\u3067\u8aad\u307f\u307e\u3057\u3087\u3046\u3002",
+        "f4-title": "\u77ac\u6642\u306b\u898b\u3064\u304b\u308b",
+        "f4-desc": "\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u5185\u306e\u5358\u8a9e\u3084\u30d5\u30ec\u30fc\u30ba\u3092\u3059\u3070\u3084\u304f\u691c\u7d22\u3002",
+        "f5-title": "\u81ea\u5206\u3060\u3051\u306e\u30e9\u30a4\u30d6\u30e9\u30ea",
+        "f5-desc": "\u30d5\u30a9\u30eb\u30c0\u3067\u6574\u7406\u3057\u3066\u3001\u81ea\u5206\u3060\u3051\u306e\u8aad\u66f8\u30b3\u30ec\u30af\u30b7\u30e7\u30f3\u3092\u4f5c\u308a\u307e\u3057\u3087\u3046\u3002",
+        "f6-title": "\u304a\u306a\u3058\u307f\u306e\u8a00\u8a9e\u3067",
+        "f6-desc": "\u82f1\u8a9e\u3001\u97d3\u56fd\u8a9e\u3001\u65e5\u672c\u8a9e\u306e\u30a4\u30f3\u30bf\u30fc\u30d5\u30a7\u30fc\u30b9\u3092\u5b8c\u5168\u30b5\u30dd\u30fc\u30c8 \u2014 \u5b89\u5fc3\u3057\u3066\u304a\u4f7f\u3044\u3044\u305f\u3060\u3051\u307e\u3059\u3002",
+        "pro-title": "Pro\u306b\u30a2\u30c3\u30d7\u30b0\u30ec\u30fc\u30c9",
+        "pro-subtitle": "\u3059\u3079\u3066\u306e\u6a5f\u80fd\u306f\u3059\u3067\u306b\u7121\u6599\u3002Pro\u306f\u5e83\u544a\u3092\u524a\u9664\u3057\u3001\u3088\u308a\u304d\u308c\u3044\u3067\u96c6\u4e2d\u3067\u304d\u308b\u8aad\u66f8\u4f53\u9a13\u3092\u304a\u5c4a\u3051\u3057\u307e\u3059\u3002",
+        "pro-f1": "\u5e83\u544a\u306a\u3057\u306e\u8aad\u66f8",
+        "pro-f2": "\u30d5\u30a1\u30df\u30ea\u30fc\u5171\u6709\uff08\u6700\u59276\u4eba\uff09",
+        "pro-f3": "\u6708\u9593\u307e\u305f\u306f\u5e74\u9593\u30d7\u30e9\u30f3",
+        "pro-f4": "2\u9031\u9593\u306e\u7121\u6599\u30c8\u30e9\u30a4\u30a2\u30eb",
+        "pro-note": "iCloud\u540c\u671f\u3001\u30d5\u30a1\u30a4\u30eb\u30a4\u30f3\u30dd\u30fc\u30c8\u3001\u8aad\u66f8\u30e2\u30fc\u30c9\u306a\u3069\u3059\u3079\u3066\u306e\u6a5f\u80fd\u306f\u7121\u6599\u3067\u3054\u5229\u7528\u3044\u305f\u3060\u3051\u307e\u3059\u3002Pro\u30b5\u30d6\u30b9\u30af\u30ea\u30d7\u30b7\u30e7\u30f3\u306f\u5e83\u544a\u306e\u307f\u3092\u524a\u9664\u3057\u307e\u3059\u3002",
+        "footer-privacy": "\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc\u30dd\u30ea\u30b7\u30fc",
+        "footer-terms": "\u5229\u7528\u898f\u7d04",
+        "footer-contact": "\u304a\u554f\u3044\u5408\u308f\u305b"
+    }
+};
+
+function setLang(lang) {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (i18n[lang] && i18n[lang][key]) {
+            el.innerHTML = i18n[lang][key];
+        }
+    });
+    document.querySelector(".lang-select").value = lang;
+    document.documentElement.lang = lang;
+    try { localStorage.setItem("lv-lang", lang); } catch(e) {}
+}
+
+// Restore saved language or detect from browser
+(function() {
+    let lang;
+    try { lang = localStorage.getItem("lv-lang"); } catch(e) {}
+    if (!lang) {
+        const bl = navigator.language || "";
+        if (bl.startsWith("ko")) lang = "ko";
+        else if (bl.startsWith("ja")) lang = "ja";
+        else lang = "en";
+    }
+    setLang(lang);
+})();
+</script>
+
+</body>
+</html>
